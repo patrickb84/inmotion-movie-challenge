@@ -1,6 +1,8 @@
+const movie = require('../models/movie');
+
 class MovieController {
   async index(req, res) {
-    res.send('MovieController.index');
+    res.send(movie.findAll());
   }
 }
 
