@@ -9,8 +9,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // routes
-app.get('/', (req, res) => {
-  res.send('Hello from express');
-});
+app.use('/api', require('./server/routes'));
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
