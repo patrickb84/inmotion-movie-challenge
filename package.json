@@ -12,6 +12,13 @@
     "sqlite3": "^5.0.2"
   },
   "scripts": {
-    "server": "nodemon server.js"
+    "client": "cd client && yarn start",
+    "server": "nodemon index.js",
+    "start": "node index.js",
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
+    "dev:server": "cd client && yarn build && cd .. && yarn start"
+  },
+  "devDependencies": {
+    "concurrently": "^6.2.1"
   }
 }
