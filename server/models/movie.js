@@ -11,4 +11,18 @@ Movie.findAll = callback => {
   });
 };
 
+Movie.add = (movie, callback) => {
+  const { title, year } = movie;
+  const sql = `
+    INSERT INTO Movie (title, year)
+    VALUES (?,?);
+    SELECT last_insert_rowid();
+  `;
+
+  return db.run(sql, [title, year], function (err, result) {
+    console.log('last_insert_rowid: ', result);
+    callback(err, result);
+  });
+};
+
 module.exports = Movie;
