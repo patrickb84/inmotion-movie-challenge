@@ -1,8 +1,15 @@
 const movie = require('../models/movie');
 
 class MovieController {
+  // get all
   async index(req, res) {
-    res.send(movie.findAll());
+    movie.findAll((err, result) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ err });
+      }
+      return res.json(result);
+    });
   }
 }
 
