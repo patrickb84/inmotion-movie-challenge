@@ -19,7 +19,7 @@ Movie.add = ({ title, year }, callback) => {
     VALUES (?,?);
   `;
   return db.run(sql, [title, year], function (err, result) {
-    callback(err, this.lastID);
+    callback(err, { newId: this.lastID });
   });
 };
 
