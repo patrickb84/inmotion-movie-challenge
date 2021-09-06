@@ -1,42 +1,31 @@
-const Movie = require('../models/movie');
+const Actor = require('../models/actor');
 
-class MovieController {
+class ActorController {
   async index(req, res) {
-    Movie.findAll((err, result) => {
+    Actor.findAll((err, result) => {
       if (err) {
         return res.status(500).json({ err });
       }
-      return res.json({ movies: result });
-    });
-  }
-
-  async search(req, res) {
-    console.log("controller.search ", req.body.query);
-    const { query } = req.body;
-    Movie.search(query, (err, result) => {
-      if (err) {
-        return res.status(500).json({ err });
-      }
-      return res.json({ movies: result });
+      return res.json({ actors: result });
     });
   }
 
   async detail(req, res) {
     const { id } = req.params;
-    Movie.findById(id, (err, result) => {
+    Actor.findById(id, (err, result) => {
       if (err) {
         return res.status(500).json({ err });
       }
       if (result == undefined) {
         return res.sendStatus(404);
       }
-      return res.json({ movie: result });
+      return res.json({ actor: result });
     });
   }
 
   async create(req, res) {
-    const { title, year } = req.body;
-    Movie.create({ title, year }, (err, result) => {
+    const { name } = req.body;
+    Actor.create({ name }, (err, result) => {
       if (err) {
         console.error(err);
         return res.status(500).json({ err });
@@ -46,8 +35,8 @@ class MovieController {
   }
 
   async update(req, res) {
-    const { id, title, year } = req.body;
-    Movie.update({ id, title, year }, (err, result) => {
+    const { id, name } = req.body;
+    Actor.update({ id, name }, (err, result) => {
       if (err) {
         return res.status(500).json({ err });
       }
@@ -57,7 +46,7 @@ class MovieController {
 
   async delete(req, res) {
     const { id } = req.params;
-    Movie.delete(id, err => {
+    Actor.delete(id, err => {
       if (err) {
         return res.status(500).json({ err });
       }
@@ -66,4 +55,4 @@ class MovieController {
   }
 }
 
-module.exports = new MovieController();
+module.exports = new ActorController();

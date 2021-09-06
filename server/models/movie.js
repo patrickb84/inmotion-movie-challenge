@@ -25,6 +25,17 @@ Movie.findById = (id, callback) => {
   });
 };
 
+Movie.search = (query, callback) => {
+  console.log('model.search', query);
+  const sql = `
+    SELECT id, title, year FROM Movie
+    WHERE (LOWER(title || ' ') || CAST(year AS TEXT)) LIKE ?
+  `;
+  return db.all(sql, ['%' + query + '%'], function (err, rows) {
+    callback(err, rows);
+  });
+};
+
 Movie.create = ({ title, year }, callback) => {
   const sql = `
     INSERT INTO Movie (title, year)

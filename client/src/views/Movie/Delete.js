@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
-import useMovies from '../hooks/useMovies';
+import useMovies from '../../hooks/useMovies';
 
 const MovieDelete = () => {
   let { id } = useParams();
@@ -32,10 +32,10 @@ const MovieDelete = () => {
           <p className='lead'>After all, you might miss it.</p>
           <div className='mt-3'>
             <Link to='/movies' className='btn btn-outline-dark px-5'>
-              Nevermind, cancel.
+              Cancel
             </Link>
             <button onClick={handleDelete} className='ms-2 btn btn-danger px-5'>
-              Yes, delete it.
+              Confirm
             </button>
           </div>
         </div>

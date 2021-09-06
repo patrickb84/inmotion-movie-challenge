@@ -1,64 +1,50 @@
 import { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import useMovies from '../hooks/useMovies';
+import useGenres from '../../hooks/useGenres';
 import { useParams } from 'react-router-dom';
 
-const MovieEdit = () => {
-  const { updateMovie, getMovie } = useMovies();
+const GenreEdit = () => {
+  const { updateGenre, getGenre } = useGenres();
 
   let { id } = useParams();
   let history = useHistory();
 
   const [displayTitle, setDisplayTitle] = useState('');
-  const [title, setTitle] = useState('');
-  const [year, setYear] = useState('');
+  const [label, setLabel] = useState('');
 
   useEffect(() => {
-    getMovie(id).then(movie => {
-      setDisplayTitle(movie.title);
-      setTitle(movie.title);
-      setYear(movie.year);
+    getGenre(id).then(g => {
+      setDisplayTitle(g.label);
+      setLabel(g.label);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSubmit = async e => {
     e.preventDefault();
-    const movie = { id, title, year };
-    await updateMovie(movie);
-    history.push('/movies');
+    const genre = { id, label };
+    await updateGenre(genre);
+    history.push('/genres');
   };
 
   return (
     <div className='container py-3'>
-    <small>
-      <Link to='/movies'>Back</Link>
-    </small>
+      <small>
+        <Link to='/genres'>Back</Link>
+      </small>
       <h2>{displayTitle}</h2>
 
       <div style={{ maxWidth: 500 }}>
         <form onSubmit={handleSubmit}>
           <div className='mb-3'>
             <label htmlFor='title' className='form-label'>
-              Title
+              Label
             </label>
             <input
               type='text'
               className='form-control'
-              value={title}
-              onChange={e => setTitle(e.target.value)}
-            />
-          </div>
-
-          <div className='mb-3'>
-            <label htmlFor='year' className='form-label'>
-              Year
-            </label>
-            <input
-              type='number'
-              className='form-control'
-              value={year}
-              onChange={e => setYear(e.target.value)}
+              value={label}
+              onChange={e => setLabel(e.target.value)}
             />
           </div>
 
@@ -73,4 +59,4 @@ const MovieEdit = () => {
   );
 };
 
-export default MovieEdit;
+export default GenreEdit;

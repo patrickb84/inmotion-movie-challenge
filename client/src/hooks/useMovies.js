@@ -1,26 +1,36 @@
 import axios from 'axios';
-import { useHistory } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
 
 const useMovies = () => {
-  let history = useHistory();
+  // let history = useHistory();
 
-  const getMovies = async () => {
+  const getAllMovies = async () => {
     try {
       const response = await axios.get('/api/movies');
       return response.data.movies;
     } catch (error) {
-      return console.error(error);
+      console.error(error);
+      return error;
+    }
+  };
+
+  const searchMovies = async query => {
+    try {
+      const response = await axios.post('/api/movies/search', { query });
+      return response.data.movies;
+    } catch (error) {
+      console.error(error);
+      return error;
     }
   };
 
   const getMovie = async id => {
     try {
-      console.log('getmovie');
       const response = await axios.get(`/api/movies/${id}`);
       const { movie } = response.data;
       return movie;
     } catch (error) {
-      handleMovieApiError(error);
+      console.error(error);
       return error;
     }
   };
@@ -34,7 +44,7 @@ const useMovies = () => {
       return response.data.newId;
     } catch (error) {
       console.error(error);
-      return { error };
+      return error;
     }
   };
 
@@ -49,8 +59,7 @@ const useMovies = () => {
       return true;
     } catch (error) {
       console.error(error);
-      handleMovieApiError(error);
-      return { error };
+      return error;
     }
   };
 
@@ -59,16 +68,25 @@ const useMovies = () => {
       await axios.delete(`/api/movies/${id}`);
       return { error: false };
     } catch (error) {
-      handleMovieApiError(error);
+      console.error(error);
+      return error;
     }
   };
 
-  const handleMovieApiError = error => {
-    if (error.response.status === 404) history.push('/error/404');
-    if (error.response.status === 500) history.push('/error/500');
-  };
+  // const handleError = error => {
+  //   if (error.response.status === 404) history.push('/error/404');
+  //   if (error.response.status === 500) history.push('/error/500');
+  //   return error;
+  // };
 
-  return { getMovies, getMovie, addMovie, updateMovie, deleteMovie };
+  return {
+    getAllMovies,
+    getMovie,
+    addMovie,
+    updateMovie,
+    deleteMovie,
+    searchMovies,
+  };
 };
 
 export default useMovies;

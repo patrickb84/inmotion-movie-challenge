@@ -1,42 +1,31 @@
-const Movie = require('../models/movie');
+const Genre = require('../models/genre');
 
-class MovieController {
+class GenreController {
   async index(req, res) {
-    Movie.findAll((err, result) => {
+    Genre.findAll((err, result) => {
       if (err) {
         return res.status(500).json({ err });
       }
-      return res.json({ movies: result });
-    });
-  }
-
-  async search(req, res) {
-    console.log("controller.search ", req.body.query);
-    const { query } = req.body;
-    Movie.search(query, (err, result) => {
-      if (err) {
-        return res.status(500).json({ err });
-      }
-      return res.json({ movies: result });
+      return res.json({ genres: result });
     });
   }
 
   async detail(req, res) {
     const { id } = req.params;
-    Movie.findById(id, (err, result) => {
+    Genre.findById(id, (err, result) => {
       if (err) {
         return res.status(500).json({ err });
       }
       if (result == undefined) {
         return res.sendStatus(404);
       }
-      return res.json({ movie: result });
+      return res.json({ genre: result });
     });
   }
 
   async create(req, res) {
-    const { title, year } = req.body;
-    Movie.create({ title, year }, (err, result) => {
+    const { label } = req.body;
+    Genre.create({ label }, (err, result) => {
       if (err) {
         console.error(err);
         return res.status(500).json({ err });
@@ -46,8 +35,8 @@ class MovieController {
   }
 
   async update(req, res) {
-    const { id, title, year } = req.body;
-    Movie.update({ id, title, year }, (err, result) => {
+    const { id, label } = req.body;
+    Genre.update({ id, label }, (err, result) => {
       if (err) {
         return res.status(500).json({ err });
       }
@@ -57,7 +46,7 @@ class MovieController {
 
   async delete(req, res) {
     const { id } = req.params;
-    Movie.delete(id, err => {
+    Genre.delete(id, err => {
       if (err) {
         return res.status(500).json({ err });
       }
@@ -66,4 +55,4 @@ class MovieController {
   }
 }
 
-module.exports = new MovieController();
+module.exports = new GenreController();
