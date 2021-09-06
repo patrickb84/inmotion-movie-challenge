@@ -10,15 +10,17 @@ const Movies = () => {
   const [updating, setUpdating] = useState(false);
 
   useEffect(() => {
-    axios
-      .get('/api/movies')
-      .then(response => {
-        setMovies(response.data.movies);
-      })
-      .catch(err => {
-        console.error(err);
-      });
+    getMovies();
   }, []);
+  
+  async function getMovies() {
+    try {
+      const { movies } = await axios.get('/api/movies').data;
+      return movies;
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   const handleSubmit = async (title, year) => {
     try {

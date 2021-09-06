@@ -11,9 +11,22 @@ class MovieController {
     });
   }
 
-  async add(req, res) {
+  async detail(req, res) {
+    const { id } = req.params;
+    Movie.findById(id, (err, result) => {
+      if (err) {
+        return res.status(500).json({ err });
+      }
+      if (result == undefined) {
+        return res.sendStatus(404);
+      }
+      return res.json({ movie: result });
+    });
+  }
+
+  async create(req, res) {
     const { title, year } = req.body;
-    Movie.add({ title, year }, (err, result) => {
+    Movie.create({ title, year }, (err, result) => {
       if (err) {
         console.error(err);
         return res.status(500).json({ err });
@@ -22,12 +35,20 @@ class MovieController {
     });
   }
 
+  async update(req, res) {
+    const { id, title, year } = req.body;
+    Movie.update({ id, title, year }, (err, result) => {
+      if (err) {
+        return res.status(500).json({ err });
+      }
+      return res.json({ success: true });
+    });
+  }
+
   async delete(req, res) {
     const { id } = req.params;
-
     Movie.delete(id, err => {
       if (err) {
-        console.error(err);
         return res.status(500).json({ err });
       }
       return res.json({ success: true });

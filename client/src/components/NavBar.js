@@ -3,10 +3,10 @@ import { LinkContainer } from 'react-router-bootstrap';
 
 const NavBar = () => {
   return (
-    <Navbar bg='dark' variant='dark' fixed='top' expand='lg'>
+    <Navbar bg='dark' variant='dark' fixed='top' expand='md'>
       <Container fluid>
         <LinkContainer to='/'>
-          <Navbar.Brand>Movie Library</Navbar.Brand>
+          <Navbar.Brand>Movie Night</Navbar.Brand>
         </LinkContainer>
         <Navbar.Toggle aria-controls='navbar-collapse' />
         <Navbar.Collapse id='navbar-collapse'>

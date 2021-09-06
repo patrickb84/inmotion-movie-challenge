@@ -9,6 +9,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // routes
-app.use('/api', require('./server/routes'));
+app.use('/api/movies', require('./server/router/movie-router'));
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));

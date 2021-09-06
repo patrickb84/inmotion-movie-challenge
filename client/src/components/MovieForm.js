@@ -36,7 +36,6 @@ const MovieForm = ({ handleSubmit, updating, setUpdating, movie }) => {
         <input
           type='text'
           className='form-control'
-          name='title'
           value={title}
           onChange={e => setTitle(e.target.value)}
         />
@@ -49,7 +48,6 @@ const MovieForm = ({ handleSubmit, updating, setUpdating, movie }) => {
         <input
           type='number'
           className='form-control'
-          name='title'
           value={year}
           onChange={e => setYear(e.target.value)}
         />

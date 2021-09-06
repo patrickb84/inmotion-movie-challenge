@@ -1,2 +1,7 @@
+:root {
+  --toastify-color-progress-dark: #6c757d;
+}
+
 @import '_custom';
+@import '~react-toastify/dist/ReactToastify.css';
 @import '~bootstrap/scss/bootstrap';
