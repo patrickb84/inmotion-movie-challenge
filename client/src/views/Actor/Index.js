@@ -26,7 +26,7 @@ const ActorIndex = () => {
         </div>
         <div>
           <div className='d-flex'>
-            <Link className='btn btn-primary ms-2' to='/actors/create'>
+            <Link className='btn btn-primary ms-2 ml-2' to='/actors/create'>
               Add&nbsp;Actor
             </Link>
           </div>
@@ -53,7 +53,7 @@ const ActorIndex = () => {
                     <td className='d-flex justify-content-end'>
                       <Link
                         to={`/actors/edit/${actor.id}`}
-                        className='btn btn-sm btn-dark me-1'>
+                        className='btn btn-sm btn-dark me-1 mr-1'>
                         Edit
                       </Link>
                       <Link

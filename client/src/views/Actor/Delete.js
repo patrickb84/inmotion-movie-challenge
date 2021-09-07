@@ -33,7 +33,7 @@ const ActorDelete = () => {
             <Link to='/actors' className='btn btn-outline-dark px-5'>
               Cancel
             </Link>
-            <button onClick={handleDelete} className='ms-2 btn btn-danger px-5'>
+            <button onClick={handleDelete} className='ms-2 ml-2 btn btn-danger px-5'>
               Confirm
             </button>
           </div>

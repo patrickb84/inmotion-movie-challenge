@@ -2,7 +2,7 @@ import { useState } from 'react';
 import useMovies from '../hooks/useMovies';
 
 const SearchBar = ({ setMovies }) => {
-  const { searchMovies, getMovies } = useMovies();
+  const { searchMovies, getAllMovies } = useMovies();
   const [searchTerm, setSearchTerm] = useState('');
 
   const handleSearch = async value => {
@@ -11,8 +11,8 @@ const SearchBar = ({ setMovies }) => {
   };
 
   const handleClear = async () => {
-    setMovies(await getMovies());
-  }
+    setMovies(await getAllMovies());
+  };
 
   return (
     <div className='input-group'>
@@ -22,16 +22,18 @@ const SearchBar = ({ setMovies }) => {
         placeholder='Search...'
         onChange={e => setSearchTerm(e.target.value)}
       />
-      <button
-        className='btn btn-outline-secondary'
-        onClick={() => handleSearch(searchTerm)}>
-        Submit
-      </button>
-      <button
-        className='btn btn-outline-secondary'
-        onClick={() => handleClear()}>
-        Clear
-      </button>
+      <div className='input-group-append'>
+        <button
+          className='btn btn-outline-secondary'
+          onClick={() => handleSearch(searchTerm)}>
+          Submit
+        </button>
+        <button
+          className='btn btn-outline-secondary'
+          onClick={() => handleClear()}>
+          Clear
+        </button>
+      </div>
     </div>
   );
 };

@@ -5,14 +5,13 @@ const db = require('../db');
 const Genre = {};
 
 Genre.findAll = callback => {
-  const sql = `
-    SELECT *
-    FROM Genre
-  `;
+  const sql = `SELECT * FROM Genre`;
   return db.all(sql, function (err, rows) {
     callback(err, rows);
   });
 };
+
+
 
 Genre.findById = (id, callback) => {
   const sql = `
@@ -38,8 +37,7 @@ Genre.create = ({ label }, callback) => {
 Genre.update = ({ id, label }, callback) => {
   const sql = `
     UPDATE Genre
-    SET
-      label = ?
+    SET label = ?
     WHERE id = ?;
   `;
   return db.run(sql, [label, id], function (err, result) {

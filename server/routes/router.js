@@ -1,6 +1,7 @@
 // server/routes/index.js
 
 const express = require('express');
+const path = require('path');
 const router = express.Router();
 
 const movieController = require('../controllers/movie-controller');

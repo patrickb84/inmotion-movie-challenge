@@ -5,7 +5,6 @@ const useGenres = () => {
   // let history = useHistory();
 
   const getAllGenres = async () => {
-    console.log('here');
     try {
       const response = await axios.get('/api/genres');
       return response.data.genres;
@@ -37,7 +36,6 @@ const useGenres = () => {
   };
 
   const updateGenre = async ({ ...genre }) => {
-    console.log(genre);
     try {
       await axios.put('/api/genres', {
         id: genre.id,

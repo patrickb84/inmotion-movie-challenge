@@ -11,7 +11,7 @@ const MovieIndex = () => {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
-    getAllMovies().then(result => {
+    return getAllMovies().then(result => {
       setMovies(result);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -27,7 +27,7 @@ const MovieIndex = () => {
           <div className='d-flex'>
             <SearchBar {...{ movies, setMovies }} />
 
-            <Link className='btn btn-primary ms-2' to='/movies/create'>
+            <Link className='btn btn-primary ms-2 ml-2' to='/movies/create'>
               Add&nbsp;Movie
             </Link>
           </div>
@@ -58,7 +58,7 @@ const MovieIndex = () => {
                     <td className='d-flex justify-content-end'>
                       <Link
                         to={`/movies/edit/${movie.id}`}
-                        className='btn btn-sm btn-dark me-1'>
+                        className='btn btn-sm btn-dark me-1 mr-1'>
                         Edit
                       </Link>
                       <Link

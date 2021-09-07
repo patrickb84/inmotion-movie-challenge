@@ -24,7 +24,7 @@ const GenreIndex = () => {
         </div>
         <div>
           <div className='d-flex'>
-            <Link className='btn btn-primary ms-2' to='/genres/create'>
+            <Link className='btn btn-primary ms-2 ml-2' to='/genres/create'>
               Add&nbsp;Genre
             </Link>
           </div>
@@ -51,7 +51,7 @@ const GenreIndex = () => {
                     <td className='d-flex justify-content-end'>
                       <Link
                         to={`/genres/edit/${genre.id}`}
-                        className='btn btn-sm btn-dark me-1'>
+                        className='btn btn-sm btn-dark me-1 mr-1'>
                         Edit
                       </Link>
                       <Link

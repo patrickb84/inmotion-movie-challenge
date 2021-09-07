@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
+
 import useMovies from '../../hooks/useMovies';
-import { useParams } from 'react-router-dom';
+import GenreSelect from '../../components/GenreSelect';
+import ActorSelect from '../../components/ActorSelect';
+import FileUpload from '../../components/FileUpload';
 
 const MovieEdit = () => {
   const { updateMovie, getMovie } = useMovies();
@@ -13,27 +16,41 @@ const MovieEdit = () => {
   const [title, setTitle] = useState('');
   const [year, setYear] = useState('');
 
+  const [genres, setGenres] = useState([]);
+  const [actors, setActors] = useState([]);
+
   useEffect(() => {
     getMovie(id).then(movie => {
+      console.log(movie);
+
       setDisplayTitle(movie.title);
       setTitle(movie.title);
       setYear(movie.year);
+      setGenres(movie.genres);
+      setActors(movie.actors);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSubmit = async e => {
     e.preventDefault();
-    const movie = { id, title, year };
+    const movie = {
+      id,
+      title,
+      year,
+      genres,
+      actors,
+    };
+    console.log(movie);
     await updateMovie(movie);
-    history.push('/movies');
+    // history.push('/movies');
   };
 
   return (
     <div className='container py-3'>
-    <small>
-      <Link to='/movies'>Back</Link>
-    </small>
+      <small>
+        <Link to='/movies'>Back</Link>
+      </small>
       <h2>{displayTitle}</h2>
 
       <div style={{ maxWidth: 500 }}>
@@ -62,9 +79,21 @@ const MovieEdit = () => {
             />
           </div>
 
+          <GenreSelect movieId={id} selected={genres} setSelected={setGenres} />
+          <ActorSelect movieId={id} selected={actors} setSelected={setActors} />
+
+          <div className='mb-3'>
+            <FileUpload />
+          </div>
+
           <div className='pt-2'>
             <button type='submit' className='btn btn-primary'>
               Submit
+            </button>
+            <button
+              onClick={() => history.push('/movies')}
+              className='btn btn-secondary ml-1 ms-1'>
+              Cancel
             </button>
           </div>
         </form>

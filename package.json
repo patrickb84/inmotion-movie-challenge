@@ -8,6 +8,7 @@
   "license": "MIT",
   "dependencies": {
     "express": "^4.17.1",
+    "multer": "^1.4.3",
     "nodemon": "^2.0.12",
     "react-toastify": "^8.0.2",
     "sqlite3": "^5.0.2"

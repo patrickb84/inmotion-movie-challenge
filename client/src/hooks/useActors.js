@@ -7,7 +7,6 @@ const useActors = () => {
   const getAllActors = async () => {
     try {
       const response = await axios.get('/api/actors');
-      console.log(response);
       return response.data.actors;
     } catch (error) {
       console.error(error);

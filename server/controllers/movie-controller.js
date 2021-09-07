@@ -6,18 +6,17 @@ class MovieController {
       if (err) {
         return res.status(500).json({ err });
       }
-      return res.json({ movies: result });
+      return res.json(result);
     });
   }
 
   async search(req, res) {
-    console.log("controller.search ", req.body.query);
     const { query } = req.body;
     Movie.search(query, (err, result) => {
       if (err) {
         return res.status(500).json({ err });
       }
-      return res.json({ movies: result });
+      return res.json(result);
     });
   }
 
@@ -30,13 +29,13 @@ class MovieController {
       if (result == undefined) {
         return res.sendStatus(404);
       }
-      return res.json({ movie: result });
+      return res.json(result);
     });
   }
 
   async create(req, res) {
-    const { title, year } = req.body;
-    Movie.create({ title, year }, (err, result) => {
+    const { title, year, genres, actors } = req.body;
+    Movie.create({ title, year, genres, actors }, (err, result) => {
       if (err) {
         console.error(err);
         return res.status(500).json({ err });
@@ -46,12 +45,12 @@ class MovieController {
   }
 
   async update(req, res) {
-    const { id, title, year } = req.body;
-    Movie.update({ id, title, year }, (err, result) => {
+    const { id, title, year, genres, actors } = req.body;
+    Movie.update({ id, title, year, genres, actors }, (err, result) => {
       if (err) {
         return res.status(500).json({ err });
       }
-      return res.json({ success: true });
+      return res.json(result);
     });
   }
 
