@@ -23,7 +23,6 @@ Movie.findById = (id, callback) => {
       [id],
       (err, genres) => {
         // callback(err, { ...movie, genres: rows });
-        console.log(err);
         if (err) callback(err);
         db.all(
           `SELECT a.* FROM Movie_Actor ma 
@@ -32,7 +31,6 @@ Movie.findById = (id, callback) => {
           WHERE movie_id = ?`,
           [id],
           (err, actors) => {
-            console.log(err);
             callback(err, { ...movie, genres, actors });
           }
         );
@@ -42,7 +40,6 @@ Movie.findById = (id, callback) => {
 };
 
 Movie.search = (query, callback) => {
-  console.log('model.search', query);
   const sql = `
     SELECT id, title, year FROM Movie
     WHERE (LOWER(title || ' ') || CAST(year AS TEXT)) LIKE ?
@@ -52,10 +49,10 @@ Movie.search = (query, callback) => {
   });
 };
 
-Movie.create = ({ title, year, genres, actors }, callback) => {
+Movie.create = ({ title, year, genres, actors, poster, rating }, callback) => {
   const sql = `
-    INSERT INTO Movie (itle, year, genres, actors)
-    VALUES (?,?,?,?);
+    INSERT INTO Movie (itle, year, genres, actors, poster, rating)
+    VALUES (?,?,?,?,?,?);
   `;
   return db.run(sql, [title, year, genres, actors], function (err, result) {
     callback(err, { ...result, newId: this.lastID });
@@ -65,13 +62,16 @@ Movie.create = ({ title, year, genres, actors }, callback) => {
 /**
  * Update movie
  */
-Movie.update = ({ id, title, year, genres, actors }, callback) => {
+Movie.update = (
+  { id, title, year, genres, actors, poster, rating },
+  callback
+) => {
+  console.log(id, title, year, genres, actors, poster, rating);
   db.serialize(() => {
-    db.run(`UPDATE Movie SET title = ?, year = ? WHERE id = ?`, [
-      title,
-      year,
-      id,
-    ]);
+    db.run(
+      `UPDATE Movie SET title = ?, year = ?, poster = ?, rating = ? WHERE id = ?`,
+      [title, year, poster, rating, id]
+    );
 
     db.run('DELETE FROM Movie_Genre WHERE movie_id = ?', [id]);
     var stmtGenres = db.prepare(
@@ -111,12 +111,9 @@ Movie.indexMovieGenres = callback => {
 };
 
 Movie.findMoviesGenres = (id, callback) => {
-  console.log('ID IS', id);
-
   const sql = `SELECT g.* FROM Movie_Genre mg INNER JOIN Genre g ON g.id = mg.genre_id WHERE movie_id = ?`;
 
   return db.all(sql, [id], function (err, result) {
-    console.log(err, result);
     callback(err, result);
   });
 };
@@ -132,7 +129,6 @@ Movie.findMoviesActors = (id, callback) => {
   const sql = `SELECT a.* FROM Movie_Actor ma INNER JOIN Actor a ON a.id = ma.actor_id WHERE movie_id = ?`;
 
   return db.all(sql, [id], function (err, result) {
-    console.log(err, result);
     callback(err, result);
   });
 };

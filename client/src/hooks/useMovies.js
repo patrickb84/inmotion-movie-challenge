@@ -9,7 +9,7 @@ const useMovies = () => {
       const response = await axios.get('/api/movies');
       return response.data;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       handleError(error);
     }
   };
@@ -34,14 +34,9 @@ const useMovies = () => {
     }
   };
 
-  const addMovie = async ({ ...movie }) => {
+  const addMovie = async movie => {
     try {
-      const response = await axios.post('/api/movies', {
-        title: movie.title,
-        year: movie.year,
-        genres: movie.genres,
-        actors: movie.actors,
-      });
+      const response = await axios.post('/api/movies', movie);
       return response.data.newId;
     } catch (error) {
       console.error(error);
@@ -49,16 +44,10 @@ const useMovies = () => {
     }
   };
 
-  const updateMovie = async ({ ...movie }) => {
-    console.log(movie);
+  const updateMovie = async movie => {
     try {
-      await axios.put('/api/movies', {
-        id: movie.id,
-        title: movie.title,
-        year: movie.year,
-        genres: movie.genres,
-        actors: movie.actors,
-      });
+      console.log(movie);
+      await axios.put('/api/movies', movie);
       return true;
     } catch (error) {
       console.error(error);

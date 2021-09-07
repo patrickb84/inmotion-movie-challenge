@@ -18,6 +18,7 @@ const MovieEdit = () => {
 
   const [genres, setGenres] = useState([]);
   const [actors, setActors] = useState([]);
+  const [poster, setPoster] = useState('');
 
   useEffect(() => {
     getMovie(id).then(movie => {
@@ -28,6 +29,7 @@ const MovieEdit = () => {
       setYear(movie.year);
       setGenres(movie.genres);
       setActors(movie.actors);
+      setPoster(movie.poster);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -40,8 +42,8 @@ const MovieEdit = () => {
       year,
       genres,
       actors,
+      poster,
     };
-    console.log(movie);
     await updateMovie(movie);
     // history.push('/movies');
   };
@@ -83,7 +85,15 @@ const MovieEdit = () => {
           <ActorSelect movieId={id} selected={actors} setSelected={setActors} />
 
           <div className='mb-3'>
-            <FileUpload />
+            {poster && (
+              <img
+                src={`/images/${poster}`}
+                alt='movie poster'
+                className='mb-3'
+                style={{ width: 300 }}
+              />
+            )}
+            <FileUpload movieId={id} poster={poster} setPoster={setPoster} />
           </div>
 
           <div className='pt-2'>
