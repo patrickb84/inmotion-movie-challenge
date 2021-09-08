@@ -10,6 +10,15 @@ class ActorController {
     });
   }
 
+  async getAllMovieActors(req, res) {
+    Actor.getAllMovieActors((err, result) => {
+      if (err) {
+        return res.status(500).json({ err });
+      }
+      return res.json(result);
+    });
+  }
+
   async detail(req, res) {
     const { id } = req.params;
     Actor.findById(id, (err, result) => {

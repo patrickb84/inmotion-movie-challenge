@@ -12,8 +12,6 @@ const ActorIndex = () => {
   useEffect(() => {
     getAllActors().then(result => {
       if (result !== undefined) setActors(result);
-      // setActors(result);
-      console.log(result);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

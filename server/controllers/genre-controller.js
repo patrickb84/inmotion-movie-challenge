@@ -10,6 +10,15 @@ class GenreController {
     });
   }
 
+  async getAllMovieGenres(req, res) {
+    Genre.getAllMovieGenres((err, result) => {
+      if (err) {
+        return res.status(500).json({ err });
+      }
+      return res.json(result);
+    });
+  }
+
   async detail(req, res) {
     const { id } = req.params;
     Genre.findById(id, (err, result) => {

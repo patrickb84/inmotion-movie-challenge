@@ -45,9 +45,9 @@ class MovieController {
   }
 
   async update(req, res) {
-    const { id, title, year, genres, actors } = req.body;
-    console.log(req.body);
-    Movie.update({ id, title, year, genres, actors }, (err, result) => {
+    const { id, title, year, poster, rating, genres, actors } = req.body;
+
+    Movie.update({ id, title, year, rating, genres, actors }, (err, result) => {
       if (err) {
         return res.status(500).json({ err });
       }
@@ -61,7 +61,7 @@ class MovieController {
       if (err) {
         res.status(500).json({ err });
       }
-      res.json({ success: true });
+      res.sendStatus(200);
     });
   }
 }

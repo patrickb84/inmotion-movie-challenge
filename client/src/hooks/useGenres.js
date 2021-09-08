@@ -13,6 +13,16 @@ const useGenres = () => {
     }
   };
 
+  const getAllMovieGenres = async () => {
+    try {
+      const response = await axios.get('/api/genres/movies');
+      return response.data;
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  };
+
   const getGenre = async id => {
     try {
       const response = await axios.get(`/api/genres/${id}`);
@@ -57,17 +67,13 @@ const useGenres = () => {
     }
   };
 
-  // const handleError = error => {
-  //   if (error.response.status === 404) history.push('/error/404');
-  //   if (error.response.status === 500) history.push('/error/500');
-  // };
-
   return {
     getGenre,
     getAllGenres,
     addGenre,
     updateGenre,
     deleteGenre,
+    getAllMovieGenres,
   };
 };
 

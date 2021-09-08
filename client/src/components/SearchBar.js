@@ -2,12 +2,13 @@ import { useState } from 'react';
 import useMovies from '../hooks/useMovies';
 
 const SearchBar = ({ setMovies }) => {
-  const { searchMovies, getAllMovies } = useMovies();
+  const { searchMovies, getAllMovies, searchLibrary } = useMovies();
   const [searchTerm, setSearchTerm] = useState('');
 
   const handleSearch = async value => {
-    const results = await searchMovies(value);
-    setMovies(results);
+    // const results = await searchMovies(value);
+    searchLibrary(value);
+    // setMovies(results);
   };
 
   const handleClear = async () => {

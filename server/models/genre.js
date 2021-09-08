@@ -11,7 +11,12 @@ Genre.findAll = callback => {
   });
 };
 
-
+Genre.getAllMovieGenres = callback => {
+  const sql = `SELECT g.*, movie_id FROM Movie_Genre mg INNER JOIN genre g ON mg.genre_id = g.id`;
+  return db.all(sql, function (err, rows) {
+    callback(err, rows);
+  });
+}
 
 Genre.findById = (id, callback) => {
   const sql = `
@@ -53,6 +58,35 @@ Genre.delete = (id, callback) => {
   return db.run(sql, [id], function (err) {
     callback(err);
   });
+};
+
+Genre.assignMovieGenres = (movieID, genres) => {
+  var stmt = db.prepare(
+    'INSERT INTO Movie_Genre (movie_id, genre_id) VALUES (?,?)'
+  );
+  [...genres].forEach(genre => stmt.run(movieID, genre.id));
+  stmt.finalize();
+};
+
+Genre.getMovieGenres = (movieID, callback) => {
+  const sql = `
+    SELECT g.* FROM Movie_Genre mg
+    INNER JOIN Genre g ON mg.genre_id = g.id
+    WHERE movie_id = ?
+  `;
+  db.all(sql, [movieID], function (err, genres) {
+    callback(err, genres);
+  });
+};
+
+Genre.deleteMovieGenres = (movieID, callback) => {
+  db.run(
+    'DELETE FROM Movie_Genre WHERE movie_id = ?',
+    [movieID],
+    function (err) {
+      if (err) callback(err);
+    }
+  );
 };
 
 module.exports = Genre;

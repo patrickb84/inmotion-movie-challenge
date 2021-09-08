@@ -16,11 +16,13 @@ const MovieCreate = () => {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    const movie = { title, year };
-    const response = await addMovie(movie);
-
-    if (!response.error) {
+    try {
+      const addedMovie = await addMovie({ title, year, genres, actors });
+      console.log(addedMovie);
       history.push('/movies');
+    } catch (error) {
+      console.log(error);
+      // todo: handle
     }
   };
 

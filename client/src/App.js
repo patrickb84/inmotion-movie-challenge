@@ -9,18 +9,19 @@ import MovieCreate from './views/Movie/Create';
 import MovieDelete from './views/Movie/Delete';
 import MovieDetail from './views/Movie/Detail';
 import MovieEdit from './views/Movie/Edit';
+import PosterUpload from './views/Movie/PosterUpload';
 
-import GenreIndex from './views/Genre/Index';
-import GenreCreate from './views/Genre/Create';
-import GenreDelete from './views/Genre/Delete';
-import GenreDetail from './views/Genre/Detail';
-import GenreEdit from './views/Genre/Edit';
+import GenreIndex from './views/Genre/Genre.Index';
+import GenreCreate from './views/Genre/Genre.Create';
+import GenreDelete from './views/Genre/Genre.Delete';
+import GenreDetail from './views/Genre/Genre.Detail';
+import GenreEdit from './views/Genre/Genre.Edit';
 
-import ActorIndex from './views/Actor/Index';
-import ActorCreate from './views/Actor/Create';
-import ActorDelete from './views/Actor/Delete';
-import ActorDetail from './views/Actor/Detail';
-import ActorEdit from './views/Actor/Edit';
+import ActorIndex from './views/Actor/Actor.Index';
+import ActorCreate from './views/Actor/Actor.Create';
+import ActorDelete from './views/Actor/Actor.Delete';
+import ActorDetail from './views/Actor/Actor.Detail';
+import ActorEdit from './views/Actor/Actor.Edit';
 
 import HTTPStatus404 from './views/HTTPStatus404';
 import HTTPStatus500 from './views/HTTPStatus500';
@@ -50,6 +51,9 @@ function App() {
           </Route>
           <Route path='/movie/:id'>
             <MovieDetail />
+          </Route>
+          <Route path='/movies/poster/:id'>
+            <PosterUpload />
           </Route>
 
           <Route exact path='/genres'>

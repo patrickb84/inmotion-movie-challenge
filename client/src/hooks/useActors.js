@@ -14,6 +14,16 @@ const useActors = () => {
     }
   };
 
+  const getAllMovieActors = async () => {
+    try {
+      const response = await axios.get('/api/actors/movies');
+      return response.data;
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  };
+
   const getActor = async id => {
     try {
       const response = await axios.get(`/api/actors/${id}`);
@@ -71,6 +81,7 @@ const useActors = () => {
     addActor,
     updateActor,
     deleteActor,
+    getAllMovieActors,
   };
 };
 

@@ -52,7 +52,7 @@ const MovieIndex = () => {
                   <tr key={movie.id}>
                     {/* <td>{movie.id}</td> */}
                     <td>
-                      <Link to={`/movie/${movie.id}`}>{movie.title}</Link>
+                      <Link to={`/movies/edit/${movie.id}`}>{movie.title}</Link>
                     </td>
                     <td>{movie.year}</td>
                     <td className='d-flex justify-content-end'>
@@ -63,7 +63,7 @@ const MovieIndex = () => {
                       </Link>
                       <Link
                         to={`/movies/delete/${movie.id}`}
-                        className='btn btn-sm btn-outline-danger'>
+                        className='btn btn-sm btn-danger'>
                         Delete
                       </Link>
                     </td>

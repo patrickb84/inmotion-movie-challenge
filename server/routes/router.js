@@ -16,12 +16,14 @@ router.put('/movies', movieController.update);
 router.delete('/movies/:id', movieController.delete);
 
 router.get('/genres', genreController.index);
+router.get('/genres/movies', genreController.getAllMovieGenres);
 router.get('/genres/:id', genreController.detail);
 router.post('/genres', genreController.create);
 router.put('/genres', genreController.update);
 router.delete('/genres/:id', genreController.delete);
 
 router.get('/actors', actorController.index);
+router.get('/actors/movies', actorController.getAllMovieActors);
 router.get('/actors/:id', actorController.detail);
 router.post('/actors', actorController.create);
 router.put('/actors', actorController.update);

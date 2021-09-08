@@ -29,7 +29,6 @@ const MovieDelete = () => {
       <div className='text-center'>
         <div className='card card-body py-5 border-dark'>
           <h2>Delete "{movie.title}" from the library?</h2>
-          <p className='lead'>After all, you might miss it.</p>
           <div className='mt-3'>
             <Link to='/movies' className='btn btn-outline-dark px-5'>
               Cancel

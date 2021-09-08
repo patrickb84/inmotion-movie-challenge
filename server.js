@@ -25,15 +25,28 @@ const storage = multer.diskStorage({
     callback(null, 'client/public/images/');
   },
   filename: (req, file, callback) => {
-    callback(null, file.originalname);
+    const Movie = require('./server/models/movie');
+    const { id } = req.params;
+    Movie.dbSelectMovie(id, (err, result) => {
+      if (err) callback(err);
+      const titleStr = result.title.split(' ').join('').replace(/\W/g, '');
+      const imgStr = file.originalname.split(' ').join('');
+      const filename = `${titleStr}__${imgStr}`;
+
+      Movie.updatePoster(id, filename, err => {
+        if (err) callback(err);
+      });
+      
+      callback(err, filename);
+    });
   },
 });
 
-const upload = multer({ storage: storage }).single('file');
+const multerUpload = multer({ storage: storage }).single('file');
 
 app.post('/api/upload/:id', (req, res) => {
   const { id } = req.params;
-  upload(req, res, err => {
+  multerUpload(req, res, err => {
     if (err) {
       console.error(err);
       res.sendStatus(500);

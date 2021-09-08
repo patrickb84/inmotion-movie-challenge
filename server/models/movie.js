@@ -1,9 +1,12 @@
 // server/models/movie.js
 
 const db = require('../db');
+const Genre = require('./genre');
+const Actor = require('./actor');
 
 const Movie = {};
 
+// todo: add nested data, genres actors
 Movie.findAll = callback => {
   const sql = `SELECT * FROM Movie`;
   return db.all(sql, (err, rows) => {
@@ -12,33 +15,28 @@ Movie.findAll = callback => {
 };
 
 Movie.findById = (id, callback) => {
-  const sql = `SELECT * FROM Movie WHERE id = ?`;
-  db.get(sql, id, function (err, movie) {
+  // step 1: select movie from movie table
+  // step 2: get genres, append to movie
+  // step 3: get actors, append to movie
+  // step 4: return movie
+  Movie.dbSelectMovie(id, function (err, movie) {
     if (err) callback(err);
-    db.all(
-      `SELECT g.* FROM Movie_Genre mg 
-      INNER JOIN Genre g
-      ON mg.genre_id = g.id
-      WHERE movie_id = ?`,
-      [id],
-      (err, genres) => {
-        // callback(err, { ...movie, genres: rows });
-        if (err) callback(err);
-        db.all(
-          `SELECT a.* FROM Movie_Actor ma 
-          INNER JOIN Actor a
-          ON ma.actor_id = a.id
-          WHERE movie_id = ?`,
-          [id],
-          (err, actors) => {
-            callback(err, { ...movie, genres, actors });
-          }
-        );
-      }
-    );
+    Genre.getMovieGenres(movie.id, function (err, genres) {
+      if (err) callback(err);
+      Actor.getMovieActors(movie.id, function (err, actors) {
+        callback(err, { ...movie, genres, actors });
+      });
+    });
   });
 };
 
+Movie.dbSelectMovie = (id, callback) => {
+  db.get(`SELECT * FROM Movie WHERE id = ?`, id, (err, result) => {
+    callback(err, result);
+  });
+};
+
+// todo: include genres actors etc
 Movie.search = (query, callback) => {
   const sql = `
     SELECT id, title, year FROM Movie
@@ -49,57 +47,57 @@ Movie.search = (query, callback) => {
   });
 };
 
-Movie.create = ({ title, year, genres, actors, poster, rating }, callback) => {
-  const sql = `
-    INSERT INTO Movie (itle, year, genres, actors, poster, rating)
-    VALUES (?,?,?,?,?,?);
+Movie.create = (movie, callback) => {
+  const { genres, actors } = movie;
+
+  insertMovie(movie, (err, movieID) => {
+    Genre.assignMovieGenres(movieID, genres);
+    Actor.assignMovieActors(movieID, actors);
+    Movie.findById(movieID, (err, result) => {
+      callback(err, result);
+    });
+  });
+
+  return movie;
+};
+
+const insertMovie = (movie, callback) => {
+  const { title, year, poster, rating } = movie;
+  const sqlInsert = `
+    INSERT INTO Movie (title, year, poster, rating)
+    VALUES (?,?,?,?);
   `;
-  return db.run(sql, [title, year, genres, actors], function (err, result) {
-    callback(err, { ...result, newId: this.lastID });
+  db.run(sqlInsert, [title, year, poster, rating], function (err) {
+    callback(err, this.lastID);
   });
 };
 
-/**
- * Update movie
- */
 Movie.update = (
-  { id, title, year, genres, actors, poster, rating },
+  { id, title, year, rating, genres, actors },
   callback
 ) => {
-  console.log(id, title, year, genres, actors, poster, rating);
   db.serialize(() => {
     db.run(
-      `UPDATE Movie SET title = ?, year = ?, poster = ?, rating = ? WHERE id = ?`,
-      [title, year, poster, rating, id]
+      `UPDATE Movie 
+      SET title = ?, year = ?, rating = ?
+      WHERE id = ?`,
+      [title, year, rating, id]
     );
+    Genre.deleteMovieGenres(id, err => console.error(err));
+    Genre.assignMovieGenres(id, [...genres]);
+    Actor.deleteMovieActors(id, err => console.error(err));
+    Actor.assignMovieActors(id, [...actors]);
 
-    db.run('DELETE FROM Movie_Genre WHERE movie_id = ?', [id]);
-    var stmtGenres = db.prepare(
-      'INSERT INTO Movie_Genre (movie_id, genre_id) VALUES (?,?)'
-    );
-    genres.forEach(genre => {
-      stmtGenres.run(id, genre.id);
-    });
-    stmtGenres.finalize();
-
-    db.run('DELETE FROM Movie_Actor WHERE movie_id = ?', [id]);
-    var stmtActors = db.prepare(
-      'INSERT INTO Movie_Actor (movie_id, actor_id) VALUES (?,?)'
-    );
-    actors.forEach(actor => stmtActors.run([id, actor.id]));
-    stmtActors.finalize();
+    Movie.findById(id, (err, result) => callback(err, result));
   });
-
-  Movie.findById(id, (err, result) => callback(err, result));
 };
 
 Movie.delete = (id, callback) => {
-  const sql = `
-    DELETE FROM Movie
-    WHERE id = ?;
-  `;
-  return db.run(sql, [id], function (err) {
-    callback(err);
+  db.run(`DELETE FROM Movie WHERE id = ?;`, [id], function (err) {
+    if (err) callback(err);
+    Genre.deleteMovieGenres(id, err => console.error(err));
+    Actor.deleteMovieActors(id, err => console.log(err));
+    callback(err, true);
   });
 };
 
@@ -131,6 +129,11 @@ Movie.findMoviesActors = (id, callback) => {
   return db.all(sql, [id], function (err, result) {
     callback(err, result);
   });
+};
+
+Movie.updatePoster = (id, poster, callback) => {
+  const sql = `UPDATE Movie SET poster = ? WHERE id = ?`;
+  db.run(sql, [poster, id], err => callback(err));
 };
 
 module.exports = Movie;
