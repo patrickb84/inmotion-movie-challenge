@@ -1,20 +1,18 @@
 import { useState } from 'react';
-import _ from 'lodash';
+import useMovies from '../hooks/useMovies';
 
-const SearchBar = ({ setResults, clearResults }) => {
+const SearchBar = ({ setMovies }) => {
+  const { searchMovies, getAllMovies, searchLibrary } = useMovies();
   const [searchTerm, setSearchTerm] = useState('');
 
   const handleSearch = async value => {
-    clearResults().then(data => {
-      var results = data.filter(movie =>
-        movie.metadata.find(v => v.includes(value.toLowerCase()))
-      );
-      setResults(results);
-    });
+    // const results = await searchMovies(value);
+    searchLibrary(value);
+    // setMovies(results);
   };
 
   const handleClear = async () => {
-    clearResults().then(resultsCleared => setResults(resultsCleared));
+    setMovies(await getAllMovies());
   };
 
   return (

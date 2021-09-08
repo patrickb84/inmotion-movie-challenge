@@ -7,11 +7,11 @@ import useMovies from '../../hooks/useMovies.js';
 import SearchBar from '../../components/SearchBar';
 
 const MovieIndex = () => {
-  const { getAllMovies } = useMovies();
+  const { getMoviesMap } = useMovies();
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
-    return getAllMovies().then(result => {
+    getMoviesMap().then(result => {
       setMovies(result);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -25,7 +25,7 @@ const MovieIndex = () => {
         </div>
         <div>
           <div className='d-flex'>
-            <SearchBar {...{ movies, setMovies }} />
+            <SearchBar setResults={setMovies} clearResults={getMoviesMap} />
 
             <Link className='btn btn-primary ms-2 ml-2' to='/movies/create'>
               Add&nbsp;Movie
@@ -43,6 +43,7 @@ const MovieIndex = () => {
                 {/* <th>#</th> */}
                 <th>Title</th>
                 <th>Year</th>
+                <th>Rating</th>
                 <th></th>
               </tr>
             </thead>
@@ -55,6 +56,7 @@ const MovieIndex = () => {
                       <Link to={`/movies/edit/${movie.id}`}>{movie.title}</Link>
                     </td>
                     <td>{movie.year}</td>
+                    <td>{movie.rating}</td>
                     <td className='d-flex justify-content-end'>
                       <Link
                         to={`/movies/edit/${movie.id}`}

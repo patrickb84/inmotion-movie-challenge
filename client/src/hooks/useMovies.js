@@ -19,6 +19,35 @@ const useMovies = () => {
     }
   };
 
+  const getMoviesMap = async () => {
+    const movies = await getAllMovies();
+    const movieGenres = await getAllMovieGenres();
+    const movieActors = await getAllMovieActors();
+
+    const moviesMapped = movies.map(movie => {
+      const genres = movieGenres
+        .filter(mg => mg.movie_id === movie.id)
+        .map(g => {
+          return g.label;
+        });
+      const actors = movieActors
+        .filter(ma => ma.movie_id === movie.id)
+        .map(a => {
+          return a.name;
+        });
+      const str = [
+        movie.title,
+        '' + movie.year,
+        genres.join(' '),
+        actors.join(' '),
+      ].join('');
+      const metadata = str.toLowerCase().split(" ");
+      return { ...movie, genres, actors, metadata };
+    });
+
+    return moviesMapped;
+  };
+
   const searchMovies = async query => {
     try {
       const response = await axios.post('/api/movies/search', { query });
@@ -34,7 +63,7 @@ const useMovies = () => {
       const movies = await getAllMovies();
       const mActors = await getAllMovieActors();
       const mGenres = await getAllMovieGenres();
-      
+
       const libraryMap = movies.map(movie => {
         return {
           year: movie.year,
@@ -43,12 +72,14 @@ const useMovies = () => {
             .filter(g => g.movie_id === movie.id)
             .map(g => {
               return g.label;
-            }).join(" "),
+            })
+            .join(' '),
           actors: mActors
             .filter(a => a.movie_id === movie.id)
             .map(a => {
               return a.name;
-            }).join(" "),
+            })
+            .join(' '),
         };
       });
       console.log(libraryMap);
@@ -125,6 +156,7 @@ const useMovies = () => {
     searchMovies,
     uploadPoster,
     searchLibrary,
+    getMoviesMap,
   };
 };
 

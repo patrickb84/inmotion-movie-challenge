@@ -5,6 +5,9 @@ import { ToastContainer, toast } from 'react-toastify';
 import useMovies from '../../hooks/useMovies';
 import GenreSelect from '../../components/GenreSelect';
 import ActorSelect from '../../components/ActorSelect';
+import SelectRating from '../../components/SelectRating';
+import InputTitle from '../../components/InputTitle';
+import InputYear from '../../components/InputYear';
 
 const MovieEdit = () => {
   const { updateMovie, getMovie } = useMovies();
@@ -14,6 +17,7 @@ const MovieEdit = () => {
   const [displayTitle, setDisplayTitle] = useState('');
   const [title, setTitle] = useState('');
   const [year, setYear] = useState('');
+  const [rating, setRating] = useState('');
   // const [formPoster, setFormPoster] = useState('');
 
   const [genres, setGenres] = useState([]);
@@ -27,6 +31,7 @@ const MovieEdit = () => {
       setYear(movie.year);
       setGenres(movie.genres);
       setActors(movie.actors);
+      setRating(movie.rating);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -40,7 +45,9 @@ const MovieEdit = () => {
       year,
       genres,
       actors,
+      rating,
     };
+    // todo: lose this
     console.log('update movie, submit --> ', movie);
     await updateMovie(movie);
 
@@ -57,29 +64,14 @@ const MovieEdit = () => {
         <div style={{ maxWidth: 500 }}>
           <form onSubmit={handleSubmit}>
             <div className='mb-3'>
-              <label htmlFor='title' className='form-label'>
-                Title
-              </label>
-              <input
-                type='text'
-                className='form-control'
-                value={title}
-                onChange={e => setTitle(e.target.value)}
-              />
+              <InputTitle setTitle={setTitle} title={title} />
             </div>
-
             <div className='mb-3'>
-              <label htmlFor='year' className='form-label'>
-                Year
-              </label>
-              <input
-                type='number'
-                className='form-control'
-                value={year}
-                onChange={e => setYear(e.target.value)}
-              />
+              <InputYear setYear={setYear} year={year} />
             </div>
-
+            <div className='mb-3'>
+              <SelectRating setMovieRating={setRating} movieRating={rating} />
+            </div>
             <GenreSelect
               movieId={id}
               selected={genres}
@@ -90,8 +82,7 @@ const MovieEdit = () => {
               selected={actors}
               setSelected={setActors}
             />
-
-            <div className='mt-5'>
+            <div className='mt-4'>
               <Link to={`/movies/poster/${id}`} className='btn btn-info'>
                 Set Movie Poster
               </Link>
