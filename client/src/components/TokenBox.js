@@ -1,4 +1,3 @@
-import Form from "react-bootstrap/Form";
 import { Typeahead } from "react-bootstrap-typeahead";
 
 const TokenBox = ({
