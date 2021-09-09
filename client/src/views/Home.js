@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import SearchBar from "../components/SearchBar";
-import useMovies from "../hooks/useMovies";
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import SearchBar from '../components/SearchBar';
+import useMovies from '../hooks/useMovies';
 // import _ from 'lodash';
 
 const Home = () => {
@@ -10,7 +10,7 @@ const Home = () => {
   const { getMoviesMap } = useMovies();
 
   useEffect(() => {
-    getMoviesMap().then((movies) => {
+    getMoviesMap().then(movies => {
       try {
         console.log(movies);
         setMovies(movies);
@@ -23,53 +23,54 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="container-fluid py-3">
-      <div className="d-flex justify-content-between align-items-end mb-4">
-        <h1 className="m-0">Movie Library</h1>
-        <div>
+    <div className='container-fluid py-3'>
+      <div className='d-flex justify-content-between align-items-end mb-4'>
+        <h1 className='m-0'>Movie Library</h1>
+        <div className='d-flex'>
           <SearchBar
             data={movies}
             setResults={setMovies}
             clearResults={getMoviesMap}
           />
+          <Link className='btn btn-primary ms-2 ml-2' to='/movies/create'>
+            Add&nbsp;Movie
+          </Link>
         </div>
       </div>
 
-      <div className="mt-3">
-        <div className="row">
+      <div className='mt-3'>
+        <div className='row'>
           {/* card */}
           {movies &&
-            movies.map((movie) => {
+            movies.map(movie => {
               return (
                 <div
-                  className="mb-3 col-lg-3 col-xl-2 col-md-4 d-flex"
-                  key={movie.id}
-                >
-                  <div className="card shadow">
-                    <div className="card-body">
+                  className='mb-3 col-lg-3 col-xl-2 col-md-4 d-flex'
+                  key={movie.id}>
+                  <div className='card shadow'>
+                    <div className='card-body'>
                       <img
                         src={`/images/${
-                          movie.poster ? movie.poster : "poster_placeholder.jpg"
+                          movie.poster ? movie.poster : 'poster_placeholder.jpg'
                         }`}
-                        alt="poster"
-                        className="w-100 mb-2"
+                        alt='poster'
+                        className='w-100 mb-2'
                       />
 
-                      <div className="text-info d-flex justify-content-between">
+                      <div className='text-info d-flex justify-content-between'>
                         <span>{movie.year}</span>
                         <span>{movie.rating}</span>
                       </div>
-                      <h4 className="h5">{movie.title}</h4>
+                      <h4 className='h5'>{movie.title}</h4>
 
                       {movie.genres.length > 0 && (
-                        <div className="mb-3">
-                          <ul className="list-unstyled mb-0">
-                            {movie.genres.map((genre) => {
+                        <div className='mb-3'>
+                          <ul className='list-unstyled mb-0'>
+                            {movie.genres.map(genre => {
                               return (
                                 <div
-                                  className="badge badge-warning mr-1 me-1"
-                                  key={genre}
-                                >
+                                  className='badge badge-warning mr-1 me-1'
+                                  key={genre}>
                                   {genre}
                                 </div>
                               );
@@ -79,22 +80,21 @@ const Home = () => {
                       )}
 
                       {movie.actors.length > 0 && (
-                        <div className="mb-2">
-                          <h5 className="h6">Starring</h5>
-                          <ul className="list-unstyled mb-0">
-                            {movie.actors.map((actor) => {
+                        <div className='mb-2'>
+                          <h5 className='h6'>Starring</h5>
+                          <ul className='list-unstyled mb-0'>
+                            {movie.actors.map(actor => {
                               return <li key={actor}>{actor}</li>;
                             })}
                           </ul>
                         </div>
                       )}
                     </div>
-                    <div className="card-footer d-flex justify-content-between">
+                    <div className='card-footer d-flex justify-content-between'>
                       <Link to={`/movies/edit/${movie.id}`}>Edit</Link>
                       <Link
                         to={`/movies/delete/${movie.id}`}
-                        className="text-danger"
-                      >
+                        className='text-danger'>
                         Delete
                       </Link>
                     </div>
