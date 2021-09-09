@@ -18,7 +18,9 @@
     "server": "nodemon index.js",
     "start": "node index.js",
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
-    "dev:server": "cd client && yarn build && cd .. && yarn start"
+    "serve": "concurrently --kill-others-on-fail \"yarn start\" \"yarn client\"",
+    "dev:server": "cd client && yarn build && cd .. && yarn start",
+    "assess": "yarn && cd client && yarn && cd .. && yarn dev"
   },
   "devDependencies": {
     "concurrently": "^6.2.1"

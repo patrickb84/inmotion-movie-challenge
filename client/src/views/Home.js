@@ -92,7 +92,7 @@ const Home = () => {
                     <div className="card-footer d-flex justify-content-between">
                       <Link to={`/movies/edit/${movie.id}`}>Edit</Link>
                       <Link
-                        to={`/movies/edit/${movie.id}`}
+                        to={`/movies/delete/${movie.id}`}
                         className="text-danger"
                       >
                         Delete
