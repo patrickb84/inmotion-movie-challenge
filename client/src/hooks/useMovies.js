@@ -1,8 +1,8 @@
-import axios from 'axios';
-import { useHistory } from 'react-router-dom';
-import useActors from './useActors';
-import useGenres from './useGenres';
-import _ from 'lodash';
+import axios from "axios";
+import { useHistory } from "react-router-dom";
+import useActors from "./useActors";
+import useGenres from "./useGenres";
+import _ from "lodash";
 
 const useMovies = () => {
   let history = useHistory();
@@ -11,7 +11,7 @@ const useMovies = () => {
 
   const getAllMovies = async () => {
     try {
-      const response = await axios.get('/api/movies');
+      const response = await axios.get("/api/movies");
       return response.data;
     } catch (error) {
       console.error(error);
@@ -24,33 +24,34 @@ const useMovies = () => {
     const movieGenres = await getAllMovieGenres();
     const movieActors = await getAllMovieActors();
 
-    const moviesMapped = movies.map(movie => {
-      const genres = movieGenres
-        .filter(mg => mg.movie_id === movie.id)
-        .map(g => {
-          return g.label;
-        });
-      const actors = movieActors
-        .filter(ma => ma.movie_id === movie.id)
-        .map(a => {
-          return a.name;
-        });
-      const str = [
-        movie.title,
-        '' + movie.year,
-        genres.join(' '),
-        actors.join(' '),
-      ].join('');
-      const metadata = str.toLowerCase().split(" ");
-      return { ...movie, genres, actors, metadata };
-    });
-
-    return moviesMapped;
+    if (movies.length > 0) {
+      const moviesMapped = movies.map((movie) => {
+        const genres = movieGenres
+          .filter((mg) => mg.movie_id === movie.id)
+          .map((g) => {
+            return g.label;
+          });
+        const actors = movieActors
+          .filter((ma) => ma.movie_id === movie.id)
+          .map((a) => {
+            return a.name;
+          });
+        const str = [
+          movie.title,
+          "" + movie.year,
+          genres.join(" "),
+          actors.join(" "),
+        ].join("");
+        const metadata = str.toLowerCase().split(" ");
+        return { ...movie, genres, actors, metadata };
+      });
+      return moviesMapped;
+    }
   };
 
-  const searchMovies = async query => {
+  const searchMovies = async (query) => {
     try {
-      const response = await axios.post('/api/movies/search', { query });
+      const response = await axios.post("/api/movies/search", { query });
       return response.data.movies;
     } catch (error) {
       console.error(error);
@@ -58,28 +59,28 @@ const useMovies = () => {
     }
   };
 
-  const searchLibrary = async query => {
+  const searchLibrary = async (query) => {
     try {
       const movies = await getAllMovies();
       const mActors = await getAllMovieActors();
       const mGenres = await getAllMovieGenres();
 
-      const libraryMap = movies.map(movie => {
+      const libraryMap = movies.map((movie) => {
         return {
           year: movie.year,
           title: movie.title,
           genres: mGenres
-            .filter(g => g.movie_id === movie.id)
-            .map(g => {
+            .filter((g) => g.movie_id === movie.id)
+            .map((g) => {
               return g.label;
             })
-            .join(' '),
+            .join(" "),
           actors: mActors
-            .filter(a => a.movie_id === movie.id)
-            .map(a => {
+            .filter((a) => a.movie_id === movie.id)
+            .map((a) => {
               return a.name;
             })
-            .join(' '),
+            .join(" "),
         };
       });
       console.log(libraryMap);
@@ -88,7 +89,7 @@ const useMovies = () => {
     }
   };
 
-  const getMovie = async id => {
+  const getMovie = async (id) => {
     try {
       const response = await axios.get(`/api/movies/${id}`);
 
@@ -99,9 +100,9 @@ const useMovies = () => {
     }
   };
 
-  const addMovie = async movie => {
+  const addMovie = async (movie) => {
     try {
-      const response = await axios.post('/api/movies', movie);
+      const response = await axios.post("/api/movies", movie);
       const addedMovie = response.data;
       return addedMovie;
     } catch (error) {
@@ -110,10 +111,10 @@ const useMovies = () => {
     }
   };
 
-  const updateMovie = async movie => {
+  const updateMovie = async (movie) => {
     try {
-      console.log('updateMovie() -->', movie);
-      await axios.put('/api/movies', movie);
+      console.log("updateMovie() -->", movie);
+      await axios.put("/api/movies", movie);
       return true;
     } catch (error) {
       console.error(error);
@@ -121,7 +122,7 @@ const useMovies = () => {
     }
   };
 
-  const deleteMovie = async id => {
+  const deleteMovie = async (id) => {
     try {
       await axios.delete(`/api/movies/${id}`);
       return { error: false };
@@ -134,16 +135,16 @@ const useMovies = () => {
   const uploadPoster = async (data, movieId) => {
     try {
       const response = await axios.post(`/api/upload/${movieId}`, data);
-      console.log('UPLOAD POSTER () ', response);
+      console.log("UPLOAD POSTER () ", response);
       return response.data.filename;
     } catch (error) {
       console.error(error);
     }
   };
 
-  const handleError = error => {
-    if (error.response.status === 404) history.push('/error/404');
-    if (error.response.status === 500) history.push('/error/500');
+  const handleError = (error) => {
+    if (error.response.status === 404) history.push("/error/404");
+    if (error.response.status === 500) history.push("/error/500");
     return error;
   };
 

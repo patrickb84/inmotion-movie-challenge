@@ -1,30 +1,35 @@
-import Table from 'react-bootstrap/Table';
-import Card from 'react-bootstrap/Card';
-import { Link } from 'react-router-dom';
+import Table from "react-bootstrap/Table";
+import Card from "react-bootstrap/Card";
+import { Link } from "react-router-dom";
 
-import { useEffect, useState } from 'react';
-import useActors from '../../hooks/useActors.js';
+import { useEffect, useState } from "react";
+import useActors from "../../hooks/useActors.js";
 
 const ActorIndex = () => {
   const { getAllActors } = useActors();
   const [actors, setActors] = useState([]);
 
   useEffect(() => {
-    getAllActors().then(result => {
-      if (result !== undefined) setActors(result);
+    getAllActors().then((result) => {
+      if (result !== undefined)
+        setActors(
+          result.sort((x, y) => {
+            return x.name.localeCompare(y.label);
+          })
+        );
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <div className='container-fluid py-3'>
-      <div className='d-flex justify-content-between align-items-center mb-3'>
+    <div className="container-fluid py-3">
+      <div className="d-flex justify-content-between align-items-center mb-3">
         <div>
-          <h1 className='mb-0'>Actors</h1>
+          <h1 className="mb-0">Actors</h1>
         </div>
         <div>
-          <div className='d-flex'>
-            <Link className='btn btn-primary ms-2 ml-2' to='/actors/create'>
+          <div className="d-flex">
+            <Link className="btn btn-primary ms-2 ml-2" to="/actors/create">
               Add&nbsp;Actor
             </Link>
           </div>
@@ -43,20 +48,22 @@ const ActorIndex = () => {
               </tr>
             </thead>
             <tbody>
-              {actors.map(actor => {
+              {actors.map((actor) => {
                 return (
                   <tr key={actor.id}>
                     <td>{actor.id}</td>
                     <td>{actor.name}</td>
-                    <td className='d-flex justify-content-end'>
+                    <td className="d-flex justify-content-end">
                       <Link
                         to={`/actors/edit/${actor.id}`}
-                        className='btn btn-sm btn-dark me-1 mr-1'>
+                        className="btn btn-sm btn-dark me-1 mr-1"
+                      >
                         Edit
                       </Link>
                       <Link
                         to={`/actors/delete/${actor.id}`}
-                        className='btn btn-sm btn-outline-danger'>
+                        className="btn btn-sm btn-danger"
+                      >
                         Delete
                       </Link>
                     </td>

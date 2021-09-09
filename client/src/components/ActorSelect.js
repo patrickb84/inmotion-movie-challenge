@@ -1,32 +1,36 @@
-import { useState, useEffect } from 'react';
-import TokenBox from './TokenBox';
+import { useState, useEffect } from "react";
+import Form from "react-bootstrap/Form";
+import TokenBox from "./TokenBox";
 
-import useActors from '../hooks/useActors';
-// import useMovies from '../hooks/useMovies';
+import useActors from "../hooks/useActors";
+import { Link } from "react-router-dom";
 
-const ActorSelect = ({ movieId, selected, setSelected }) => {
+const ActorSelect = ({ selected, setSelected }) => {
   const { getAllActors } = useActors();
-  // const { getMovieActors } = useMovies();
 
   const [options, setOptions] = useState([]);
 
   useEffect(() => {
-    getAllActors().then(result => setOptions(result));
-    // if (movieId) {
-    //   getMovieActors(movieId).then(selected => setSelected(selected));
-    // }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    getAllActors().then((result) => setOptions(result));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <TokenBox
-      options={options}
-      placeholder='Select actors...'
-      formLabel='Actors'
-      selected={selected}
-      setSelected={setSelected}
-      labelKey='name'
-    />
+    <Form.Group>
+      <div className="d-flex justify-content-between">
+        <label>Actor(s)</label>
+        <Link to="/actors">Actor Settings</Link>
+      </div>
+
+      <TokenBox
+        options={options}
+        placeholder="Select actors..."
+        formLabel="Actors"
+        selected={selected}
+        setSelected={setSelected}
+        labelKey="name"
+      />
+    </Form.Group>
   );
 };
 

@@ -1,33 +1,37 @@
-import { useState, useEffect } from 'react';
-import TokenBox from './TokenBox';
+import { useState, useEffect } from "react";
+import Form from "react-bootstrap/Form";
+import TokenBox from "./TokenBox";
 
-import useGenres from '../hooks/useGenres';
-// import useMovies from '../hooks/useMovies';
+import useGenres from "../hooks/useGenres";
+import { Link } from "react-router-dom";
 
-const GenreSelect = ({ movieId, selected, setSelected }) => {
+const GenreSelect = ({ selected, setSelected }) => {
   const { getAllGenres } = useGenres();
-  // const { getMovieGenres } = useMovies();
-
   const [options, setOptions] = useState([]);
 
   useEffect(() => {
-    getAllGenres().then(result => {
+    getAllGenres().then((result) => {
       setOptions(result);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  
-
   return (
-    <TokenBox
-      options={options}
-      placeholder='Select genres...'
-      formLabel='Genres'
-      selected={selected}
-      setSelected={setSelected}
-      labelKey='label'
-    />
+    <Form.Group>
+      <div className="d-flex justify-content-between">
+        <label>Genre(s)</label>
+        <Link to="/genres">Genre Settings</Link>
+      </div>
+
+      <TokenBox
+        options={options}
+        placeholder="Select genres..."
+        formLabel="Genres"
+        selected={selected}
+        setSelected={setSelected}
+        labelKey="label"
+      />
+    </Form.Group>
   );
 };
 
